@@ -24,7 +24,6 @@ function ForceGraph({
   nodeStroke = "#fff", // node stroke color
   nodeStrokeWidth = 1.5, // node stroke width, in pixels
   nodeStrokeOpacity = 1, // node stroke opacity
-  nodeFillOpacity = 1, // node fill opacity
   nodeStrength,
   linkSource = ({ source }) => source, // given d in links, returns a node identifier string
   linkTarget = ({ target }) => target, // given d in links, returns a node identifier string
@@ -119,7 +118,7 @@ function ForceGraph({
     .on('mouseenter', mouseEnter)
     .on('mouseleave', mouseLeave)
     .on('click', function (event, d) {
-      syscall('event.dispatch', 'graphview:navigateTo', d.id);
+      syscall('event.dispatch','graphview:navigateTo', d.id);
     });
 
   const labels = svg.append("g")
@@ -146,7 +145,7 @@ function ForceGraph({
     .attr('text-anchor', 'middle')
     .attr('class', 'svgtext')
     .on('click', function (event, d) {
-      syscall('event.dispatch', 'graphview:navigateTo', d.id);
+      syscall('event.dispatch','graphview:navigateTo', d.id);
     });
 
   if (G) node.attr("fill", ({ index: i }) => color(G[i]));
@@ -215,7 +214,7 @@ function ForceGraph({
     node
       .filter(n => subgraph.nodes.indexOf(n.index) > -1)
       .attr("stroke-opacity", nodeStrokeOpacity)
-      .attr("fill-opacity", nodeFillOpacity)
+      .attr("fill-opacity", nodeStrokeOpacity)
     link
       .filter(l => subgraph.links.indexOf(l.index) > -1)
       .attr("stroke-opacity", linkStrokeOpacity);
@@ -226,7 +225,7 @@ function ForceGraph({
 
   function mouseLeave(event, d) {
     node.attr("stroke-opacity", nodeStrokeOpacity);
-    node.attr("fill-opacity", nodeFillOpacity);
+    node.attr("fill-opacity", nodeStrokeOpacity);
     link.attr("stroke-opacity", linkStrokeOpacity);
     labels.attr("opacity", opacity_activation(zoomLevel));
   }
